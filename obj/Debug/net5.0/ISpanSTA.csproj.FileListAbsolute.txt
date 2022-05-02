@@ -663,3 +663,5 @@ E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpa
 E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpanSTA\obj\Debug\net5.0\ISpanSTA.pdb
 E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpanSTA\obj\Debug\net5.0\ISpanSTA.genruntimeconfig.cache
 E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpanSTA\obj\Debug\net5.0\Razor\Views\TExamPaper\Edit.cshtml.g.cs
+E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpanSTA\obj\Debug\net5.0\Razor\Views\SExamIndex\StartExam4.cshtml.g.cs
+E:\專題製作第二組-5\IsapnSTA core-20220413T062834Z-001\IsapnSTA core\ISpanSTA\obj\Debug\net5.0\Razor\Views\TSjCategory2\Index.cshtml.g.cs

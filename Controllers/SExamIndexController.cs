@@ -145,8 +145,53 @@ namespace ISpanSTA.Controllers
             }
         }
 
-        // POST: SExamIndexController/Edit/5
-        [HttpPost]
+
+
+
+
+        public IActionResult StartExam4(int? id)
+        {
+            if (id != null)
+            {
+                //TExaminationPaper ep = _context.TExaminationPapers.FirstOrDefault(ep => ep.FExamPaperId == (int)id);
+
+                var data = (from epd in _context.TExamPaperDetails
+                           join ep in _context.TExaminationPapers on epd.FExamPaperId equals ep.FExamPaperId
+                           join s in _context.TSujects on epd.FSujectId equals s.FSujectId
+                           where epd.FExamPaperId == (int)id
+                           select s).ToList();
+                    CStartExam2ViewModel SEVM = new CStartExam2ViewModel();
+                
+                SEVM.subject = data;
+
+                var Sdata = (from s in _context.TStudentFullInfos
+                            where s.FStudentNumber == 1  //這邊要改判斷哪位學生
+                            select s).ToList();
+
+                SEVM.student = Sdata;
+
+                    ViewBag.StudentId = 1;
+
+                var EPdata = (from ep in _context.TExaminationPapers
+                              where ep.FExamPaperId == id
+                              select ep).ToList();
+                SEVM.examp = EPdata;
+                    
+
+                    return View(SEVM);
+                
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
+
+
+
+
+            // POST: SExamIndexController/Edit/5
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {

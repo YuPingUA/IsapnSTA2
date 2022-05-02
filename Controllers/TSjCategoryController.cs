@@ -36,7 +36,7 @@ namespace ISpanSTA.Controllers
             List<TCategory> list = new List<TCategory>();
             foreach (var t in data)
                 list.Add(t);
-            return View();
+            return View(list);
         }
 
         public IActionResult save(TCategory ca)
