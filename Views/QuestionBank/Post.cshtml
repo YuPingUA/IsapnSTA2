@@ -1,19 +1,19 @@
 ﻿@model ISpanSTA.ViewModel.CategoryViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Post";
     //Layout = null;
 
 }
 
 
 <div class="container mt-5">
-    <h1>課程類別管理</h1>
+    @*<h1>課程類別管理</h1>*@
 
     <div class="row">
         <div class="col-sm-6">
             <div class="container">
-                <form asp-action="Post" asp-controller="TSjCategory2" method="post">
+                <form asp-action="Post" asp-controller="QuestionBank" method="post">
                     <div class="row" style="border:2px solid black; margin:0 auto; padding:20px;">
                         <div class="col-md-2">
                             CourseId
@@ -65,6 +65,7 @@
             </div>
         </div>
         </div>
+    </div>
         @*<button class="btn btn-danger" onclick="getCategoryData()">點我</button>*@
 
 

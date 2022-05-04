@@ -17,6 +17,12 @@ namespace ISpanSTA.Controllers
         {
             _context = context;
         }
+
+        public IActionResult Index2()
+        {
+            return View();
+        }
+
         // GET: SExamIndexController
         public IActionResult Index() //TStudentFullInfo s
         {            
@@ -165,7 +171,7 @@ namespace ISpanSTA.Controllers
                 SEVM.subject = data;
 
                 var Sdata = (from s in _context.TStudentFullInfos
-                            where s.FStudentNumber == 1  //這邊要改判斷哪位學生
+                            where s.FStudentNumber == 5  //這邊要改判斷哪位學生
                             select s).ToList();
 
                 SEVM.student = Sdata;

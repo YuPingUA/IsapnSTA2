@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<ISpanSTA.ViewModel.CExamPaperViewModel>*@
-@model X.PagedList.IPagedList<ISpanSTA.ViewModel.CExamPaperViewModel>
+@model X.PagedList.IPagedList<ISpanSTA.ViewModel.CExampDetailsViewModel>
 @using X.PagedList.Mvc.Core;
 
 @{
@@ -277,7 +277,7 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.FTimeLimit)
                                                     </td>
-                                                    <td>
+                                                    <td>                                                        
                                                         @Html.DisplayFor(modelItem => item.FReveal)
                                                     </td>
                                                     @*<td>

@@ -198,5 +198,9 @@ namespace ISpanSTA.ViewModel
         }
 
         public int[] addSj { get; set; }
+        public TExaminationPaper examp2 { get; set; }
+        public List<TExamPaperDetail> epd2 { get; set; }
+        public List<TSuject> sj2 { get; set; }
+        public List<TCategory> ca2 { get; set; }
     }
 }

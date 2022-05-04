@@ -42,7 +42,7 @@ namespace ISpanSTA.Controllers
             var data = from ep in _context.TExaminationPapers
                        join cl in _context.TClassFullInfos on ep.FClassPeriod equals cl.FClassPeriod
                        join co in _context.TClassCourseFullInfos on ep.FCourseId equals co.FCourseId
-                       select new CExamPaperViewModel
+                       select new CExampDetailsViewModel
                        {
                            FExamPaperId = ep.FExamPaperId,
                            FClassPeriod = ep.FClassPeriod,
@@ -55,7 +55,7 @@ namespace ISpanSTA.Controllers
                            FReveal = ep.FReveal
                        };
 
-            List<CExamPaperViewModel> list = new List<CExamPaperViewModel>();
+            List<CExampDetailsViewModel> list = new List<CExampDetailsViewModel>();
             foreach (var t in data)
                 list.Add(t);
             //return View(list);
@@ -267,6 +267,58 @@ namespace ISpanSTA.Controllers
 
 
                 TExaminationPaper ep = _context.TExaminationPapers.FirstOrDefault(ep => ep.FExamPaperId == (int)id);
+
+
+                
+                List<TSuject> subjectList = new List<TSuject>();
+
+                var questions = (from q in _context.TSujects
+                                 join ca in _context.TCategories on q.FCategoryId equals ca.FCategoryId
+                                 where q.FCourseId == coId
+                                 select q
+                                 ).OrderBy(q => q.FSujectId);
+                foreach (var q in questions)
+                {
+                    subjectList.Add(q);
+                }
+
+
+
+
+                var epd = from t in _context.TExamPaperDetails
+                          join s in _context.TSujects on t.FSujectId equals s.FSujectId
+                          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
+                          where t.FExamPaperId == id
+                          select s;
+
+                var epd2 = from t in _context.TExamPaperDetails
+                          join s in _context.TSujects on t.FSujectId equals s.FSujectId
+                          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
+                          where t.FExamPaperId == id
+                          select c;
+                var epdList = epd.ToList();
+                List<int> sjIdBList = new List<int>();
+                for(int i = 0; i < epdList.Count; i++)
+                {
+
+                    sjIdBList.Add(epdList[i].FSujectId);
+                }
+                ViewBag.sjIdBList = sjIdBList;
+
+                List<int> sjBIndexList = new List<int>();
+                //ViewBag.sjIdIndex = 
+                for ( int i = 0; i < sjIdBList.Count;i++ )
+                {
+                    sjBIndexList.Add(subjectList.FindIndex(sj => sj.FSujectId == sjIdBList[i]));
+                }
+
+                ViewBag.sjBIndexList = sjBIndexList;
+
+                CExampDetailsViewModel vm = new CExampDetailsViewModel();
+                vm.examp2 = ep;
+                vm.sj2 = epd.ToList();
+                vm.ca2 = epd2.ToList();
+                
                 if (ep != null)
                 {
                     return View(new CExampDetailsViewModel() { examp = ep });
@@ -278,15 +330,31 @@ namespace ISpanSTA.Controllers
         // POST: CExamPaperController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(CExampDetailsViewModel e)
         {
             try
             {
+                TExaminationPaper ep1 = _context.TExaminationPapers.FirstOrDefault(ep1 => ep1.FExamPaperId == e.FExamPaperId); ;
+                if (ep1 != null)
+                {
+                    ep1.FExamPaperId = e.FExamPaperId;
+                    ep1.FClassPeriod = e.FClassPeriod;
+                    ep1.FCourseId = e.FCourseId;
+                    ep1.FName = e.FName;
+                    ep1.FBegin = e.FBegin;
+                    ep1.FEnd = e.FEnd;
+                    ep1.FReveal = e.FReveal;
+                    ep1.FTimeLimit = e.FTimeLimit;
+                    ep1.FOrder = e.FOrder;
+                    ep1.FDescription = e.FDescription;
+
+                    _context.SaveChanges();
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(e);
             }
         }
 

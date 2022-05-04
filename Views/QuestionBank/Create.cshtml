@@ -30,7 +30,8 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <button asp-action="OrtherCategory" class="btn btn-success" >其他</button>
+                        <button asp-action="OrtherCategory" class="btn btn-success">其他</button>
+                        <a onclick="showInPopup('@Url.Action("Post","QuestionBank",null,Context.Request.Scheme)','題目類別管理')" class="btn btn-info text-white">其他</a>
                     </div>
                 </div>
 
@@ -102,8 +103,24 @@
             </form>
         </div>
     </div>
+</div>
 
 
+<div class="modal" tabindex="-1" id="form-modal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title"></h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
 </div>
     @section Scripts {
 
@@ -150,7 +167,27 @@
             const opt = new Option(item.fName, item.fCategoryId);
             selCategory.options.add(opt);
         })
-    }
+            }
+
+
+
+            showInPopup = (url, title) => {
+                //$.ajax({
+                //    type: "GET",
+                //    url: url,
+                //    success: function (res) {
+                //        $("#form-modal2 .modal-body").html(res);
+                //        $("#form-modal2 .modal-title").html(title);
+                //        $("#form-modal2").modal('show');
+                //    }
+                //})
+
+                $("#form-modal2 .modal-body").load('/QuestionBank/Post');
+                $("#form-modal2 .modal-title").html(title);
+                $("#form-modal2").modal('show');
+            };
+
+
         </script>
 
 

@@ -301,5 +301,68 @@ namespace ISpanSTA.Controllers
             return Json(categorys);
         //
     }
-}
+
+
+
+
+
+
+
+
+
+        public IActionResult IndexC()
+        {
+            return View();
+        }
+
+        // GET: TSjCategory2Controller
+        public IEnumerable<TCategory> Get()
+        {
+            return _context.TCategories.ToList();
+        }
+
+        public IActionResult Post()
+        {
+            
+            return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Post(TCategory category)
+        {
+            //TCategory newcategory = new TCategory();
+            //newcategory.FCourseId = category.FCourseId;
+            //newcategory.FName = category.FName;
+            //newcategory.FContent = category.FContent;
+
+            _context.TCategories.Add(category);
+            _context.SaveChanges();
+            return RedirectToAction("Post");
+
+        }
+        
+
+        public string Put(int id, TCategory category)
+        {
+            var category_ = _context.TCategories.Find(id);
+            category_.FCourseId = category.FCourseId;
+            category_.FName = category.FName;
+            category_.FContent = category.FContent;
+
+            //_context.Entry(category_).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            return "category Updated";
+        }
+
+
+        public ActionResult DeleteC(int id)
+        {
+            TCategory category = _context.TCategories.Find(id);
+            _context.TCategories.Remove(category);
+            return View();
+        }
+
+
+    }
 }

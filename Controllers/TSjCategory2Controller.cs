@@ -1,4 +1,5 @@
 ﻿using ISpanSTA.Models;
+using ISpanSTA.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,7 +18,7 @@ namespace ISpanSTA.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult IndexC()
         {
             return View();
         }
@@ -29,20 +30,25 @@ namespace ISpanSTA.Controllers
         }
 
         // GET: TSjCategory2Controller/Details/5
-        public TCategory Get(int id)
-        {
-            TCategory category = _context.TCategories.Find(id);
-            return category;
-        }
+        //public TCategory Get(int id)
+        //{
+        //    TCategory category = _context.TCategories.Find(id);
+        //    return category;
+        //}
 
         // GET: TSjCategory2Controller/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public string Post(TCategory category)
+        
+        public IActionResult Post(TCategory category)
         {
+            //TCategory newcategory = new TCategory();
+            //newcategory.FCourseId = category.FCourseId;
+            //newcategory.FName = category.FName;
+            //newcategory.FContent = category.FContent;
+
             _context.TCategories.Add(category);
             _context.SaveChanges();
-            return "Category added";
+            return RedirectToAction("Index");
+
         }
 
         // POST: TSjCategory2Controller/Create
@@ -89,7 +95,7 @@ namespace ISpanSTA.Controllers
         }
 
         // GET: TSjCategory2Controller/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteC(int id)
         {
             TCategory category = _context.TCategories.Find(id);
             _context.TCategories.Remove(category);
