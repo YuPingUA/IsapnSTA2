@@ -170,20 +170,10 @@ namespace ISpanSTA.Controllers
                 
                 SEVM.subject = data;
 
-                var Sdata = (from s in _context.TStudentFullInfos
-                            where s.FStudentNumber == 5  //這邊要改判斷哪位學生
-                            select s).ToList();
+                SEVM.student = _context.TStudentFullInfos.FirstOrDefault(s => s.FStudentNumber == 5);//這邊要改判斷哪位學生 
 
-                SEVM.student = Sdata;
-
-                    ViewBag.StudentId = 1;
-
-                var EPdata = (from ep in _context.TExaminationPapers
-                              where ep.FExamPaperId == id
-                              select ep).ToList();
-                SEVM.examp = EPdata;
-                    
-
+                SEVM.examp = _context.TExaminationPapers.FirstOrDefault(ep => ep.FExamPaperId == id);               
+                 
                     return View(SEVM);
                 
             }
@@ -193,11 +183,34 @@ namespace ISpanSTA.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StartExam4(CStartExamViewModel rc)
+        {
+            try
+            {
+                TRecord ts = new TRecord();
+                //ts.FRecordId = rc.FRecordId;
+                ts.FStudentId = rc.FStudentId;
+                ts.FExamPaperId = rc.FExamPaperId;
+                ts.FSujectId = rc.FSujectId;
+                ts.FDateTime = DateTime.Now;
+                ts.FChoose = rc.FChoose;
+
+                _context.TRecords.Add(ts);
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(rc);
+            }
+        }
 
 
-
-            // POST: SExamIndexController/Edit/5
-            [HttpPost]
+        // POST: SExamIndexController/Edit/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
