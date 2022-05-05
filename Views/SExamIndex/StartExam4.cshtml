@@ -196,17 +196,18 @@
     <script>
 
 
-            function radioChecked() {
-                $("input[type='radio']").each(function (i) {
-                    if ($(this).attr("name") != 'unit') {
-                        if ($(this).is(":checked")) {
-                            count++;
-                            console.log('选中了' + count);
-                        }
-                    }
-                });
+            //function radioChecked() {
+            //    $("input[type='radio']").each(function (i) {
+            //        if ($(this).attr("name") != 'unit') {
+            //            if ($(this).is(":checked")) {
+            //                count++;
+            //                console.log('选中了' + count);
+            //            }
+            //        }
+            //    });
 
-            }
+            //}
+
         $(".form-check").find("input").click(function () {
             console.log("123");
             $("#1").css("background-color", "red");
