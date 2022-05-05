@@ -284,40 +284,45 @@ namespace ISpanSTA.Controllers
 
 
 
-
                 var epd = from t in _context.TExamPaperDetails
                           join s in _context.TSujects on t.FSujectId equals s.FSujectId
                           join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
                           where t.FExamPaperId == id
                           select s;
 
-                var epd2 = from t in _context.TExamPaperDetails
-                          join s in _context.TSujects on t.FSujectId equals s.FSujectId
-                          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
-                          where t.FExamPaperId == id
-                          select c;
+                //var epd2 = from t in _context.TExamPaperDetails
+                //          join s in _context.TSujects on t.FSujectId equals s.FSujectId
+                //          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
+                //          where t.FExamPaperId == id
+                //          select c;
                 var epdList = epd.ToList();
                 List<int> sjIdBList = new List<int>();
+
                 for(int i = 0; i < epdList.Count; i++)
                 {
-
                     sjIdBList.Add(epdList[i].FSujectId);
                 }
-                ViewBag.sjIdBList = sjIdBList;
+                int a = sjIdBList.Count;
+                int[] sjIdArr = new int[a];
 
-                List<int> sjBIndexList = new List<int>();
-                //ViewBag.sjIdIndex = 
-                for ( int i = 0; i < sjIdBList.Count;i++ )
+                for (int i = 0; i < sjIdBList.Count; i++)
                 {
-                    sjBIndexList.Add(subjectList.FindIndex(sj => sj.FSujectId == sjIdBList[i]));
+                    sjIdArr[i] = sjIdBList[i];
+                    //TempData[$"{i}"] = sjIdBList[i];
+                   
                 }
+                //TempData["sjIdBJtd"] = sjIdArr;
 
-                ViewBag.sjBIndexList = sjBIndexList;
+
+                //sjIdListBJ(sjIdArr);
+
+                ViewBag.sjIdBList = sjIdBList;
+                ViewBag.test = sjIdBList.Count();
 
                 CExampDetailsViewModel vm = new CExampDetailsViewModel();
                 vm.examp2 = ep;
                 vm.sj2 = epd.ToList();
-                vm.ca2 = epd2.ToList();
+                //vm.ca2 = epd2.ToList();
                 
                 if (ep != null)
                 {
@@ -326,6 +331,21 @@ namespace ISpanSTA.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public JsonResult sjIdListBJ()    //int[] sjIdBJ
+        {
+            //int[] sjIdListBJ = new int[TempData.Count()];
+
+            //for (int a = 0; a <= TempData.Count(); a++)
+            //{
+            //    sjIdListBJ[a] = TempData[a].ToString();
+            //}
+            int[] sjIdListBJ = (int[])TempData["sjIdBJtd"];
+                //sjIdBJ;
+            return Json(sjIdListBJ);
+        }
+
+
 
         // POST: CExamPaperController/Edit/5
         [HttpPost]
@@ -455,6 +475,8 @@ namespace ISpanSTA.Controllers
             return Json(questions);
 
         }
+
+        
 
 
     }

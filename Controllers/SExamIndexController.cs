@@ -185,19 +185,25 @@ namespace ISpanSTA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StartExam4(CStartExamViewModel rc)
+        public ActionResult StartExam4(CStartExam2ViewModel rc)
         {
+            int totalcount = rc.subject.Count();
             try
             {
-                TRecord ts = new TRecord();
-                //ts.FRecordId = rc.FRecordId;
-                ts.FStudentId = rc.FStudentId;
-                ts.FExamPaperId = rc.FExamPaperId;
-                ts.FSujectId = rc.FSujectId;
-                ts.FDateTime = DateTime.Now;
-                ts.FChoose = rc.FChoose;
+                List<TRecord> list = new List<TRecord>();
+                for (int i = 0; i < totalcount; i++)
+                {
+                    TRecord ts = new TRecord();
+                    ts.FStudentId = rc.student.FStudentNumber;
+                    ts.FExamPaperId = rc.examp.FExamPaperId;
+                    ts.FSujectId = rc.subject[i].FSujectId;
+                    ts.FDateTime = DateTime.Now;
+                    ts.FChoose = rc.FChoose_1;
+                    list.Add(ts);
+                }
 
-                _context.TRecords.Add(ts);
+                //_context.TRecords.Add(list);
+
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
@@ -244,49 +250,6 @@ namespace ISpanSTA.Controllers
                 return View();
             }
         }
-
-
-        public IActionResult test()
-        {
-            TempData["a"] = 1;
-            int qNo = (int)TempData["a"];
-            ViewBag.questionNo = qNo;
-            TSuject a = (TSuject)TempData["qData"];
-
-            return View(a);
-        }
-
-       
-        [HttpPost]
-        public IActionResult test(TSuject aaa)
-        {
-            //if (aaa.correct_ans == aaa.selectedvalue && aaa.qus_id != 1)
-            //{
-            //    Session["correctAns"] = Convert.ToInt32(Session["correctAns"]) + 1;
-            //}
-            //else if (aaa.correct_ans == aaa.selectedvalue && aaa.qus_id == 1)
-            //{
-            //    Session["correctAns"] = 1;
-            //}
-
-            //if (aaa.qus_id == 10)
-            //{
-            //    return RedirectToAction("Create", "Result");
-
-            //}
-            //int qId = (int)aaa.qus_id + 1;
-            //Questions_tbl SingleQuestion = db.Questions_tbl.SingleOrDefault(m => m.qus_id == qId && m.exam_id == aaa.exam_id);
-
-
-            //ViewBag.questionNo = qId;
-            //TempData["a"] = SingleQuestion.qus_id;
-            //TempData["qData"] = SingleQuestion;
-            //return RedirectToAction("NextQuestion");
-            return View();
-
-        }
-
-
 
 
     }
