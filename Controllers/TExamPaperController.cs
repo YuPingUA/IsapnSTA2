@@ -272,15 +272,15 @@ namespace ISpanSTA.Controllers
                 
                 List<TSuject> subjectList = new List<TSuject>();
 
-                var questions = (from q in _context.TSujects
-                                 join ca in _context.TCategories on q.FCategoryId equals ca.FCategoryId
-                                 where q.FCourseId == coId
-                                 select q
-                                 ).OrderBy(q => q.FSujectId);
-                foreach (var q in questions)
-                {
-                    subjectList.Add(q);
-                }
+                //var questions = (from q in _context.TSujects
+                //                 join ca in _context.TCategories on q.FCategoryId equals ca.FCategoryId
+                //                 where q.FCourseId == coId
+                //                 select q
+                //                 ).OrderBy(q => q.FSujectId);
+                //foreach (var q in questions)
+                //{
+                //    subjectList.Add(q);
+                //}
 
 
 
@@ -308,27 +308,22 @@ namespace ISpanSTA.Controllers
                 for (int i = 0; i < sjIdBList.Count; i++)
                 {
                     sjIdArr[i] = sjIdBList[i];
-                    //TempData[$"{i}"] = sjIdBList[i];
                    
                 }
-                //TempData["sjIdBJtd"] = sjIdArr;
-
-
-                //sjIdListBJ(sjIdArr);
-
+              
                 ViewBag.sjIdBList = sjIdBList;
                 ViewBag.test = sjIdBList.Count();
 
-                var epdd = from d in _context.TExamPaperDetails
-                          join s in _context.TSujects on d.FSujectId equals s.FSujectId
-                          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
-                          where d.FExamPaperId == id
-                          select d;
+                //var epdd = from d in _context.TExamPaperDetails
+                //          join s in _context.TSujects on d.FSujectId equals s.FSujectId
+                //          join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
+                //          where d.FExamPaperId == id
+                //          select d;
 
-                CExampDetailsViewModel vm = new CExampDetailsViewModel();
-                vm.examp2 = ep;
-                vm.sj2 = epd.ToList();
-                vm.epd2 = epdd.ToList();
+                //CExampDetailsViewModel vm = new CExampDetailsViewModel();
+                //vm.examp2 = ep;
+                //vm.sj2 = epd.ToList();
+                //vm.epd2 = epdd.ToList();
                 
                 if (ep != null)
                 {
@@ -336,7 +331,7 @@ namespace ISpanSTA.Controllers
                 }
             }
             return RedirectToAction("Index");
-        }
+         }
               
 
 
@@ -361,11 +356,33 @@ namespace ISpanSTA.Controllers
                     ep1.FOrder = e.FOrder;
                     ep1.FDescription = e.FDescription;
 
+
+                    //所選試卷編輯前所擁有的所有題目明細
+                    var BeforeEdit = from b in _context.TExamPaperDetails
+                                     where b.FExamPaperId == e.FExamPaperId
+                                     select b;
+                    List<TExamPaperDetail> BeforeEditList = BeforeEdit.ToList();
+
+
                     var data = (from t in _context.TExamPaperDetails
                               join s in _context.TSujects on t.FSujectId equals s.FSujectId
                               join c in _context.TCategories on s.FCategoryId equals c.FCategoryId
                               where t.FExamPaperId == e.FExamPaperId
                     select s).ToList();
+
+
+                    int[] EpSjListA = e.addSj; //修改後的題目ID
+
+                    foreach (TExamPaperDetail epd in BeforeEditList)
+                    {
+                        int sID = epd.FSujectId; //抓出修改前的所選題目ID
+
+                        if (!EpSjListA.Contains(sID)) //如果新的題目ID裡 沒有 舊的題目ID
+                        {
+                             _context.TExamPaperDetails.Remove(epd);  //將沒有的那筆舊題目移除
+                            _context.SaveChanges();
+                        }
+                    }
 
 
                     int[] EpSjListB = new int[data.Count];
@@ -374,20 +391,8 @@ namespace ISpanSTA.Controllers
                         EpSjListB[i] = data[i].FSujectId; //抓出修改前的所選題目ID
                     }
 
-                    int[] EpSjListA = e.addSj;
-
-                    foreach (int a in EpSjListB)
-                    {
-
-                        if (!EpSjListA.Contains(a)) //如果新的題目ID裡 沒有 舊的題目ID
-                        {
-                            TExamPaperDetail epd = _context.TExamPaperDetails.FirstOrDefault(d => d.FSujectId == a);
-                            _context.TExamPaperDetails.Remove(epd);  //將沒有的那筆舊題目移除
-                            _context.SaveChanges();
-                        }
-                    }
-
                     
+
                     foreach (int aSID in EpSjListA)
                     {
                         if (!EpSjListB.Contains(aSID)) //如果舊的題目ID裡 沒有 新的題目ID

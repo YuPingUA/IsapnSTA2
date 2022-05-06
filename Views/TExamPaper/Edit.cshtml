@@ -39,9 +39,9 @@
         <div class="col-12">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="FExamPaperId" class="form-control" />
-                <input type="hidden" asp-for="FEpDetailId" class="form-control" />
-                <input type="hidden" asp-for="FSujectId" class="form-control" />
+                <input asp-for="FExamPaperId" class="form-control" />
+                @*<input type="hidden" asp-for="FEpDetailId" class="form-control" />
+                <input type="hidden" asp-for="FSujectId" class="form-control" />*@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
@@ -118,7 +118,7 @@
                 <select class="form-select" multiple size="10" aria-label="size 10 select example" name="addSj" id="addSj" style="width:100%">
                 </select>
 
-                <select class="form-select" size="10" aria-label="size 10 select example" id="showSj" style="width:100%">
+                <select class="form-select" multiple size="10" aria-label="size 10 select example" name="showSj" id="showSj" style="width:100%">
                 </select>
                 <div class="form-group">
                     <input type="submit" value="確認" class="btn btn-primary" />
@@ -210,7 +210,7 @@
                 selshowSj.options.add(opt);
 
             })
-
+            
             addBsj();
         }
 
@@ -223,7 +223,8 @@
             for (int i=0;i< list; i++)
             {
                 @:console.log(@ViewBag.sjIdBList[i]);
-                @: $("#showSj option[value='@ViewBag.sjIdBList[i]']").appendTo('#addSj');
+                @: $("#showSj>option[value='@ViewBag.sjIdBList[i]']").appendTo('#addSj');
+                @*@:  $("#addSj>option").attr("select", "selected");*@
                 //@: $("#showSj option[value='3']").appendTo('#addSj');
                @:tempSj.push('@ViewBag.sjIdBList[i]')
              }

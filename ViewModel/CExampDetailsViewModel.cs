@@ -69,8 +69,8 @@ namespace ISpanSTA.ViewModel
 
         public int FExamPaperId
         {
-            get { return this.exampd.FExamPaperId; }
-            set { this.exampd.FExamPaperId = value; }
+            get { return this.examp.FExamPaperId; }
+            set { this.examp.FExamPaperId = value; }
         }
 
         [DisplayName("班級")]
@@ -198,6 +198,7 @@ namespace ISpanSTA.ViewModel
         }
 
         public int[] addSj { get; set; }
+        public int[] showSj { get; set; }
         public TExaminationPaper examp2 { get; set; }
         public List<TExamPaperDetail> epd2 { get; set; }
         public List<TSuject> sj2 { get; set; }
